@@ -36,6 +36,16 @@ Permite actualizar el firmware del dispositivo directamente desde el navegador, 
 - Cable USB-C compatible con datos
 - Archivo `firmware/firmware-full.bin` incluido en el repositorio
 
+## Uso en línea
+
+Accede al flasheador web en: **https://martin78b.github.io/corem5s3-tv-flasher/**
+
+**Nota:** Para que el dispositivo aparezca en el navegador, debes ponerlo en **modo boot**:
+1. Mantén presionado el botón **BOOT** del dispositivo
+2. Mientras lo mantienes presionado, conecta el cable USB
+3. Suelta el botón BOOT
+4. El dispositivo estará listo para ser detectado por el flasheador web
+
 ## Ejecución local
 
 ### Opción 1: Python (recomendado)
@@ -59,14 +69,6 @@ Copia la carpeta del proyecto a cualquier servidor web estático.
 
 **Importante:** Web Serial API requiere HTTPS o localhost. No funciona con `file://`.
 
-## Publicación en GitHub Pages
-
-1. Sube el proyecto a un repositorio de GitHub
-2. Ve a **Settings > Pages**
-3. Selecciona **Deploy from a branch**
-4. Elige la rama `main` y la carpeta `/(root)`
-5. Guarda
-6. Tu sitio estará disponible en `https://<usuario>.github.io/<repositorio>/`
 
 ## Actualizar firmware
 

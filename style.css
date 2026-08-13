@@ -220,6 +220,28 @@ header h1 {
   color: var(--text-primary);
 }
 
+.boot-instructions {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--bg-primary);
+  border-radius: 8px;
+  border: 1px dashed var(--border-color);
+}
+
+.boot-instructions p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 4px 0;
+}
+
+.boot-instructions p:first-child {
+  margin-bottom: 6px;
+}
+
+.boot-instructions strong {
+  color: var(--accent-yellow);
+}
+
 .progress-container {
   margin: 24px 0;
 }
