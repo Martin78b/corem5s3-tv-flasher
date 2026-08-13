@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoreM5S3-TV Firmware Flasher</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>CoreM5S3-TV</h1>
+      <p class="subtitle">Firmware Flasher</p>
+      <p class="device">Waveshare ESP32-S3 Touch LCD 1.54"</p>
+    </header>
+
+    <div id="webserial-warning" class="warning hidden">
+      <p>Este flasheador requiere Google Chrome o Microsoft Edge.</p>
+      <p>La Web Serial API no está disponible en este navegador.</p>
+    </div>
+
+    <div id="app">
+      <div id="state-idle" class="state active">
+        <div class="status">
+          <span class="dot red"></span>
+          <span>Esperando dispositivo</span>
+        </div>
+        <div class="firmware-info">
+          Firmware: <span id="fw-version">v1.0.0</span>
+          <span class="size" id="fw-size"></span>
+        </div>
+        <button id="btn-connect" class="btn btn-primary" onclick="connectDevice()">
+          Conectar dispositivo
+        </button>
+      </div>
+
+      <div id="state-connected" class="state">
+        <div class="status">
+          <span class="dot green"></span>
+          <span>ESP32-S3 detectado</span>
+        </div>
+        <div class="chip-info">
+          <div class="info-row">
+            <span class="label">Chip:</span>
+            <span id="info-chip">ESP32-S3</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Revisión:</span>
+            <span id="info-revision">-</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Flash:</span>
+            <span id="info-flash">-</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Cristal:</span>
+            <span id="info-crystal">-</span>
+          </div>
+        </div>
+        <button id="btn-flash" class="btn btn-flash" onclick="flashFirmware()">
+          FLASH FIRMWARE
+        </button>
+        <button id="btn-disconnect" class="btn btn-secondary" onclick="disconnectDevice()">
+          Desconectar
+        </button>
+      </div>
+
+      <div id="state-flashing" class="state">
+        <div class="status">
+          <span class="dot yellow pulse"></span>
+          <span>Flasheando firmware...</span>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+          </div>
+          <div id="progress-percent" class="progress-percent">0%</div>
+        </div>
+        <div id="flash-detail" class="flash-detail">Preparando...</div>
+      </div>
+
+      <div id="state-success" class="state">
+        <div class="status">
+          <span class="dot green"></span>
+          <span>Firmware instalado correctamente</span>
+        </div>
+        <p class="success-msg">El dispositivo se reinició correctamente.</p>
+        <p class="success-msg">Ya puedes desconectarlo.</p>
+        <button id="btn-reconnect" class="btn btn-primary" onclick="resetToIdle()">
+          Conectar otro dispositivo
+        </button>
+      </div>
+
+      <div id="state-error" class="state">
+        <div class="status">
+          <span class="dot red"></span>
+          <span>Error al flashear</span>
+        </div>
+        <div id="error-message" class="error-msg"></div>
+        <button id="btn-retry" class="btn btn-primary" onclick="retryFlash()">
+          Reintentar
+        </button>
+        <button id="btn-restart" class="btn btn-secondary" onclick="resetToIdle()">
+          Volver al inicio
+        </button>
+      </div>
+    </div>
+
+    <div id="terminal-section" class="terminal-section hidden">
+      <div class="terminal-header" onclick="toggleTerminal()">
+        <span>Log de terminal</span>
+        <span id="terminal-toggle">▼</span>
+      </div>
+      <div id="terminal-output" class="terminal-output"></div>
+    </div>
+
+    <footer>
+      <p>Web Serial API &middot; esptool-js &middot; Sin instalaciones requeridas</p>
+    </footer>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
