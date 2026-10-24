@@ -27,9 +27,11 @@
           <span>Esperando dispositivo</span>
         </div>
         <div class="firmware-info">
-          Firmware: <span id="fw-version">v1.0.0</span>
+          <label for="fw-select">Firmware:</label>
+          <select id="fw-select" class="fw-select"></select>
           <span class="size" id="fw-size"></span>
         </div>
+        <div id="fw-changelog" class="changelog hidden"></div>
         <button id="btn-connect" class="btn btn-primary" onclick="connectDevice()">
           Conectar dispositivo
         </button>
@@ -45,6 +47,10 @@
           <span>ESP32-S3 detectado</span>
         </div>
         <div class="chip-info">
+          <div class="info-row">
+            <span class="label">Firmware:</span>
+            <span id="info-firmware">-</span>
+          </div>
           <div class="info-row">
             <span class="label">Chip:</span>
             <span id="info-chip">ESP32-S3</span>

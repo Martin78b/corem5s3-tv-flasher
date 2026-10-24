@@ -34,7 +34,7 @@ Permite actualizar el firmware del dispositivo directamente desde el navegador, 
 
 - Google Chrome o Microsoft Edge (versión 89 o superior)
 - Cable USB-C compatible con datos
-- Archivo `firmware/firmware-full.bin` incluido en el repositorio
+- Archivos de firmware en `firmware/` (`firmware-v0.3.0.bin` por defecto, `firmware-v0.2.0.bin` seleccionable)
 
 ## Uso en línea
 
@@ -72,9 +72,9 @@ Copia la carpeta del proyecto a cualquier servidor web estático.
 
 ## Actualizar firmware
 
-### Cambiar el firmware
+### Agregar una nueva versión
 
-1. Genera el firmware unificado `firmware-full.bin` con PlatformIO:
+1. Genera el firmware unificado con PlatformIO:
    ```bash
    # El firmware debe contener:
    # 0x0000   bootloader.bin
@@ -82,16 +82,21 @@ Copia la carpeta del proyecto a cualquier servidor web estático.
    # 0xE000   boot_app0.bin
    # 0x10000  firmware.bin
    ```
-2. Reemplaza `firmware/firmware-full.bin`
-3. Sube los cambios a GitHub
-
-### Cambiar la versión
-
-Edita la constante en `app.js`:
-
-```javascript
-const FIRMWARE_VERSION = "1.0.0";
-```
+2. Guárdalo como `firmware/firmware-vX.Y.Z.bin`
+3. Agrega una entrada al **principio** de la lista `FIRMWARES` en `app.js` (la primera es la que se flashea por defecto; las demás quedan seleccionables):
+   ```javascript
+   const FIRMWARES = [
+     {
+       version: "X.Y.Z",
+       url: "./firmware/firmware-vX.Y.Z.bin",
+       changelog: [
+         { title: "✨ Novedades", items: ["..."] },
+       ],
+     },
+     // versiones anteriores...
+   ];
+   ```
+4. Sube los cambios a GitHub
 
 ## Configuración de flash
 
@@ -143,7 +148,8 @@ corem5s3-tv-flasher/
 ├── app.js                  # Lógica de la aplicación
 ├── style.css               # Estilos
 ├── firmware/
-│   └── firmware-full.bin   # Firmware unificado
+│   ├── firmware-v0.3.0.bin # Firmware unificado (por defecto)
+│   └── firmware-v0.2.0.bin # Versión anterior
 ├── README.md               # Esta documentación
 ├── LICENSE                  # Licencia MIT
 └── .gitignore

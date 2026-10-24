@@ -1,5 +1,35 @@
-const FIRMWARE_URL = "./firmware/firmware-full.bin";
-const FIRMWARE_VERSION = "1.0.0";
+// La primera entrada es la que se flashea por defecto.
+const FIRMWARES = [
+  {
+    version: "0.3.0",
+    url: "./firmware/firmware-v0.3.0.bin",
+    changelog: [
+      {
+        title: "✨ Novedades",
+        items: [
+          "Menú de ajustes: con una pulsación corta de PWR se abre el menú y el episodio queda en pausa. Desde ahí se ajustan el volumen y el brillo, y se ve la info del equipo (versión, batería, cantidad de episodios).",
+          "Configuración guardada: el volumen, el brillo y la inactividad se recuerdan al apagar y prender.",
+          "Temporizador de apagado: 15 min a 4 h, o al terminar el episodio. Avisa un minuto antes y se cancela tocando la pantalla o cualquier botón.",
+          "Apagado por inactividad: se apaga solo si no se usa por 1, 2 o 4 h. No se activa mientras carga.",
+          "Versión en el arranque: la animación de inicio muestra la versión del firmware y el link al repo.",
+        ],
+      },
+      {
+        title: "🔧 Mejoras",
+        items: [
+          "Video más fluido: si va atrasado salta cuadros y dibuja más rápido en pantalla.",
+          "Lectura de batería más precisa.",
+          "Más estabilidad entre audio, video y tarjeta SD.",
+        ],
+      },
+    ],
+  },
+  {
+    version: "0.2.0",
+    url: "./firmware/firmware-v0.2.0.bin",
+    changelog: [],
+  },
+];
 
 const ESPTOOL_CDN = "https://unpkg.com/esptool-js@0.6.1/bundle.js";
 
@@ -7,6 +37,7 @@ let esploader = null;
 let transport = null;
 let port = null;
 let firmwareData = null;
+let selectedFirmware = FIRMWARES[0];
 let isFlashing = false;
 
 function checkWebSerial() {
@@ -42,23 +73,71 @@ function showTerminal() {
   document.getElementById("terminal-section").classList.remove("hidden");
 }
 
+function initFirmwareSelect() {
+  const select = document.getElementById("fw-select");
+  FIRMWARES.forEach((fw, i) => {
+    const option = document.createElement("option");
+    option.value = fw.version;
+    option.textContent = i === 0 ? `v${fw.version} (recomendada)` : `v${fw.version}`;
+    select.appendChild(option);
+  });
+  select.value = selectedFirmware.version;
+  select.addEventListener("change", () => {
+    selectedFirmware = FIRMWARES.find((fw) => fw.version === select.value);
+    firmwareData = null;
+    renderChangelog();
+    loadFirmware();
+  });
+  renderChangelog();
+}
+
+function renderChangelog() {
+  const el = document.getElementById("fw-changelog");
+  el.innerHTML = "";
+  if (selectedFirmware.changelog.length === 0) {
+    el.classList.add("hidden");
+    return;
+  }
+  const heading = document.createElement("p");
+  heading.className = "changelog-version";
+  heading.textContent = `Qué trae la v${selectedFirmware.version}`;
+  el.appendChild(heading);
+  selectedFirmware.changelog.forEach((section) => {
+    const title = document.createElement("p");
+    title.className = "changelog-title";
+    title.textContent = section.title;
+    const list = document.createElement("ul");
+    section.items.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      list.appendChild(li);
+    });
+    el.append(title, list);
+  });
+  el.classList.remove("hidden");
+}
+
 async function loadFirmware() {
+  const fw = selectedFirmware;
+  document.getElementById("fw-size").textContent = "";
   try {
-    const response = await fetch(FIRMWARE_URL);
+    const response = await fetch(fw.url);
     if (!response.ok) {
       throw new Error(`No se pudo descargar el firmware: ${response.status} ${response.statusText}`);
     }
     const arrayBuffer = await response.arrayBuffer();
+    // Descarta la respuesta si el usuario cambió de versión mientras se descargaba
+    if (fw !== selectedFirmware) return false;
     firmwareData = new Uint8Array(arrayBuffer);
 
     const sizeKB = (firmwareData.length / 1024).toFixed(0);
     document.getElementById("fw-size").textContent = `(${sizeKB} KB)`;
-    logTerminal(`Firmware cargado: ${firmwareData.length} bytes`);
+    logTerminal(`Firmware v${fw.version} cargado: ${firmwareData.length} bytes`);
     return true;
   } catch (err) {
     logTerminal(`Error al cargar firmware: ${err.message}`);
     document.getElementById("error-message").textContent =
-      `No se pudo cargar el firmware desde ${FIRMWARE_URL}. Asegúrate de que el archivo existe en la carpeta firmware/.`;
+      `No se pudo cargar el firmware desde ${fw.url}. Asegúrate de que el archivo existe en la carpeta firmware/.`;
     showState("state-error");
     return false;
   }
@@ -165,6 +244,7 @@ async function connectDevice() {
       flashSize = "No detectado";
     }
 
+    document.getElementById("info-firmware").textContent = `v${selectedFirmware.version}`;
     document.getElementById("info-chip").textContent = chipName;
     document.getElementById("info-revision").textContent = chipRevision;
     document.getElementById("info-flash").textContent = flashSize;
@@ -203,6 +283,7 @@ async function flashFirmware() {
 
   try {
     logTerminal("=== Inicio del flasheo ===");
+    logTerminal(`Versión: v${selectedFirmware.version}`);
     logTerminal(`Tamaño del firmware: ${firmwareData.length} bytes`);
     logTerminal(`Dirección: 0x0000`);
 
@@ -305,6 +386,7 @@ async function cleanup() {
 
 document.addEventListener("DOMContentLoaded", () => {
   checkWebSerial();
+  initFirmwareSelect();
   loadFirmware();
 });
 

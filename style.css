@@ -138,6 +138,54 @@ header h1 {
   color: var(--text-muted);
 }
 
+.fw-select {
+  margin-left: 6px;
+  padding: 6px 10px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.fw-select:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+.changelog {
+  text-align: left;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: -8px 0 20px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.changelog-version {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.changelog-title {
+  font-weight: 600;
+  color: var(--accent-blue);
+  margin: 10px 0 4px;
+}
+
+.changelog ul {
+  padding-left: 18px;
+}
+
+.changelog li {
+  margin: 4px 0;
+  line-height: 1.45;
+}
+
 .chip-info {
   text-align: left;
   background: var(--bg-primary);
