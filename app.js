@@ -1,6 +1,27 @@
 // La primera entrada es la que se flashea por defecto.
 const FIRMWARES = [
   {
+    version: "0.3.1",
+    url: "./firmware/firmware-v0.3.1.bin",
+    changelog: [
+      {
+        title: "✨ Novedades",
+        items: [
+          "Modo USB para pasar episodios: al conectarlo a una PC aparece un aviso en pantalla para entrar en Modo USB (también disponible desde Menú → MODO USB), permitiendo ver la tarjeta SD como un pendrive sin sacarla del equipo.",
+          "Recarga automática de la SD al desconectar: al expulsar la unidad en la PC o desenchufar el cable, el miniTV vuelve a leer la tarjeta SD en caliente, actualiza la lista con los episodios nuevos o borrados (SD RECARGADA) y retoma la reproducción sola.",
+        ],
+      },
+      {
+        title: "🔧 Mejoras",
+        items: [
+          "Transferencia USB optimizada: lectura anticipada y escritura en segundo plano (doble buffer DMA) para aprovechar al máximo la velocidad del puerto USB.",
+          "Mayor estabilidad de la tarjeta SD: corregido el fallo (NO SD CARD) que ocurría en algunas tarjetas al salir del Modo USB.",
+          "Ahorro de energía en Modo USB: el brillo baja automáticamente al 20% y se pausa el apagado por inactividad mientras se transfieren archivos.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.3.0",
     url: "./firmware/firmware-v0.3.0.bin",
     changelog: [
