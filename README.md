@@ -34,7 +34,7 @@ Permite actualizar el firmware del dispositivo directamente desde el navegador, 
 
 - Google Chrome o Microsoft Edge (versión 89 o superior)
 - Cable USB-C compatible con datos
-- Archivos de firmware en `firmware/` (`firmware-v0.3.1.bin` por defecto, versiones anteriores seleccionables)
+- Archivos de firmware en `firmware/` (`firmware-v0.3.2.bin` por defecto, versiones anteriores seleccionables)
 
 ## Uso en línea
 
@@ -148,7 +148,8 @@ corem5s3-tv-flasher/
 ├── app.js                  # Lógica de la aplicación
 ├── style.css               # Estilos
 ├── firmware/
-│   ├── firmware-v0.3.1.bin # Firmware unificado (por defecto)
+│   ├── firmware-v0.3.2.bin # Firmware unificado (por defecto)
+│   ├── firmware-v0.3.1.bin # Versión anterior
 │   ├── firmware-v0.3.0.bin # Versión anterior
 │   └── firmware-v0.2.0.bin # Versión anterior
 ├── README.md               # Esta documentación

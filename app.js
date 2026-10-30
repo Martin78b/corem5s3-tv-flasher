@@ -1,6 +1,27 @@
 // La primera entrada es la que se flashea por defecto.
 const FIRMWARES = [
   {
+    version: "0.3.2",
+    url: "./firmware/firmware-v0.3.2.bin",
+    changelog: [
+      {
+        title: "✨ Novedades",
+        items: [
+          "Rotación automática por acelerómetro: el miniTV detecta la orientación mediante el sensor IMU (QMI8658) y gira la imagen sola según cómo lo sostengas (0°, 90°, 180° y 270°).",
+          "Ajuste de rotación en el menú: nueva opción ROTACIÓN en configuración (0 / 90 / 180 / 270 / AUTO). Permite fijar una orientación o dejarla automática, y se guarda en memoria (NVS).",
+        ],
+      },
+      {
+        title: "🔧 Mejoras",
+        items: [
+          "Gestos táctiles adaptativos: volumen, brillo y menú giran sus coordenadas para responder siempre en el sentido visual correcto.",
+          "Giro fluido por hardware: rotación directa por controlador (ST7789) sin consumo de CPU ni pérdida de FPS en el video.",
+          "Filtro anti-saltos: no gira si está apoyado en la mesa y requiere mantener la inclinación fija un instante antes de cambiar para evitar giros accidentales.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.3.1",
     url: "./firmware/firmware-v0.3.1.bin",
     changelog: [
